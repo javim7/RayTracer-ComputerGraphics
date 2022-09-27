@@ -1,3 +1,7 @@
+'''
+funciones basicas para poder escribir el archivo bmp
+'''
+
 import struct
 
 
