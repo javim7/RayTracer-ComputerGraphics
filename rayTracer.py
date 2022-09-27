@@ -8,13 +8,17 @@ from sphere import *
 from color import *
 from vector import *
 
+LIGHTBLUE = color(173, 216, 230)
+WHITE = color(255, 255, 255)
+BLACK = color(0, 0, 0)
+
 
 class Raytracer(object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.background_color = color(0, 0, 0)
-        self.current_color = color(255, 255, 255)
+        self.background_color = LIGHTBLUE
+        self.current_color = WHITE
         self.clear()
         self.scene = []
         self.density = 1
