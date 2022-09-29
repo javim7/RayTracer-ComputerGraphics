@@ -3,10 +3,13 @@ clase para poder crear objetos tipo rayTracer
 '''
 from math import *
 import random
+from turtle import back
 from lib import *
 from sphere import *
 from color import *
 from vector import *
+from material import *
+from light import *
 
 LIGHTBLUE = color(173, 216, 230)
 WHITE = color(255, 255, 255)
@@ -17,10 +20,11 @@ class Raytracer(object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.background_color = LIGHTBLUE
+        self.background_color = BLACK
         self.current_color = WHITE
         self.clear()
         self.scene = []
+        self.light = Light(V3(0, 0, 0), 1)
         self.density = 1
 
     def clear(self):
@@ -31,7 +35,8 @@ class Raytracer(object):
 
     def point(self, x, y, c=None):
         if y >= 0 and y < self.height and x >= 0 and x < self.width:
-            self.framebuffer[y][x] = c or self.current_color
+            self.framebuffer[y][x] = c.toBytes(
+            ) or self.current_color.toBytes()
 
     def write(self, filename):
         writeBMP(filename, self.width, self.height, self.framebuffer)
@@ -54,8 +59,26 @@ class Raytracer(object):
                     self.point(x, y, c)
 
     def cast_ray(self, origin, direction):
-        for o in self.scene:
-            if o.ray_intersect(origin, direction):
-                return o.material
-        else:
+        material, intersect = self.scene_intersect(origin, direction)
+
+        if material is None:
             return self.background_color
+
+        light_dir = (self.light.position - intersect.point).normalize()
+        intensity = light_dir @ intersect.normal
+
+        return material.diffuse * intensity
+
+    def scene_intersect(self, origin, direction):
+        zbuffer = 99999
+        material = None
+        intersect = None
+
+        for o in self.scene:
+            object_intersect = o.ray_intersect(origin, direction)
+            if object_intersect:
+                if object_intersect.distance < zbuffer:
+                    zbuffer = object_intersect.distance
+                    material = o.material
+                    intersect = object_intersect
+        return material, intersect

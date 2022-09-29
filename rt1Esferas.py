@@ -3,11 +3,18 @@ archivo main: para poder dibujar las esferas del snowman
 '''
 
 from rayTracer import *
-import snowman
+from material import *
+# import snowman
 
-ray = Raytracer(1000, 1000)
+red = Material(diffuse=color(255, 0, 0))
+white = Material(diffuse=color(255, 255, 255))
 
-ray.scene = snowman.snowman
+ray = Raytracer(800, 800)
+ray.light = Light(V3(-3, -2, 0), 1)
+ray.scene = [
+    Sphere(V3(-3, 0, -16), 2, red),
+    Sphere(V3(2.8, 0, -10), 2., white)
+]
 
 ray.render()
-ray.write('rt1Snowman.bmp')
+ray.write('prueba.bmp')
