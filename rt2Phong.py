@@ -1,10 +1,5 @@
-'''
-archivo main: para poder dibujar las esferas del snowman
-'''
-
 from rayTracer import *
 from material import *
-# import snowman
 
 rubber = Material(diffuse=color(255, 0, 0), albedo=[0.9])
 ivory = Material(diffuse=color(255, 255, 255), albedo=[0.6])
