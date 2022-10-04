@@ -20,11 +20,10 @@ class Raytracer(object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.background_color = BLACK
+        self.background_color = WHITE
         self.current_color = WHITE
         self.clear()
         self.scene = []
-        self.light = Light(V3(0, 0, 0), 1)
         self.density = 1
 
     def clear(self):
@@ -65,11 +64,16 @@ class Raytracer(object):
             return self.background_color
 
         light_dir = (self.light.position - intersect.point).normalize()
-        intensity = light_dir @ intersect.normal
 
-        diffuse = material.diffuse * intensity * material.albedo[0]
+        dIntensity = light_dir @ intersect.normal
+        diffuse = material.diffuse * dIntensity * material.albedo[0]
 
-        return diffuse
+        light_dir = self.reflect(light_dir, intersect.normal)
+        rIntensity = max(0, light_dir @ direction)
+        specularI = self.light.intensity * rIntensity ** material.spec
+        specular = self.light.color * specularI * material.albedo[1]
+
+        return diffuse + specular
 
     def scene_intersect(self, origin, direction):
         zbuffer = 99999
@@ -84,3 +88,6 @@ class Raytracer(object):
                     material = o.material
                     intersect = object_intersect
         return material, intersect
+
+    def reflect(self, direction, normal):
+        return (direction - normal * 2 * (direction @ normal)).normalize()
