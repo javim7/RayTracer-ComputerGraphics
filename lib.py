@@ -4,6 +4,10 @@ funcion que escribe el archivo final bmp
 from writeUtils import *
 
 
+def reflect(self, direction, normal):
+    return (direction - normal * 2 * (direction @ normal)).normalize()
+
+
 def writeBMP(filename, width, height, framebuffer):
     f = open(filename, 'bw')
 

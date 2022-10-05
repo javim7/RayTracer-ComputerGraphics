@@ -2,7 +2,7 @@ from rayTracer import *
 from material import *
 import scenes
 
-ray = Raytracer(1500, 1000)
+ray = Raytracer(1500, 900)
 ray.light = Light(
     position=V3(0, 0, 0),
     intensity=2,

@@ -51,36 +51,52 @@ Creando los osos
 # colores para los osos en si
 white = Material(diffuse=color(255, 255, 255), albedo=[1, 0], spec=0)
 black = Material(diffuse=color(0, 0, 0), albedo=[0.9, 0.1], spec=30)
-lightBrown = Material(diffuse=color(215, 145, 130), albedo=[1, 0], spec=0)
-darkerBrown = Material(diffuse=color(101, 67, 33), albedo=[1, 0], spec=0)
+lightBrown = Material(diffuse=color(200, 158, 130), albedo=[1, 0], spec=0)
+darkerBrown = Material(diffuse=color(178, 95, 3), albedo=[1, 0], spec=0)
 
 # colores para las esferas metalicas
-metalRed = Material(diffuse=color(255, 0, 0), albedo=[0.7, 0.3], spec=50)
-metalGray = Material(diffuse=color(250, 250, 250), albedo=[0.9, 0.1], spec=50)
+metalRed = Material(diffuse=color(255, 0, 0), albedo=[0.7, 0.3], spec=60)
+metalGray = Material(diffuse=color(250, 250, 250), albedo=[0.9, 0.1], spec=60)
 
 # dibujando las esferas
 bears = [
-
-
     # cabezas
-    Sphere(V3(-3.5, -2.2, -10), 1.8, white),
-    Sphere(V3(3.5, -2.2, -10), 1.8, lightBrown),
+    Sphere(V3(-3.5, -2.4, -10), 1.8, white),
+    Sphere(V3(3.5, -2.4, -10), 1.8, lightBrown),
 
     # orejas
-    Sphere(V3(-4.7, -2.7, -9), 0.9, white),
-    Sphere(V3(-1.2, -2.7, -9.2), 0.9, white),
-    Sphere(V3(4.7, -2.7, -9), 0.9, darkerBrown),
-    Sphere(V3(1.2, -2.7, -8.8), 0.9, darkerBrown),
+    Sphere(V3(-4.8, -3, -9.1), 0.9, white),
+    Sphere(V3(-1.4, -3.1, -9.9), 0.9, white),
+    Sphere(V3(4.8, -3, -9.1), 0.9, darkerBrown),
+    Sphere(V3(1.4, -3.1, -9.9), 0.9, darkerBrown),
 
     # bocas
     Sphere(V3(-3.2, -2.2, -9), 0.9, white),
     Sphere(V3(3.2, -2.2, -9), 0.9, darkerBrown),
 
     # narices
-    Sphere(V3(-2.7, -2.1, -8), 0.25, black),
-    Sphere(V3(2.7, -2.1, -8), 0.25, black),
+    Sphere(V3(-2.9, -2.1, -8), 0.2, black),
+    Sphere(V3(2.9, -2.1, -8), 0.2, black),
+
+    # Ojos
+    Sphere(V3(-3.5, -2.8, -8), 0.2, black),
+    Sphere(V3(-2.2, -2.7, -8), 0.2, black),
+    Sphere(V3(3.5, -2.8, -8), 0.2, black),
+    Sphere(V3(2.2, -2.7, -8), 0.2, black),
 
     # cuerpos
     Sphere(V3(-3.5, 0, -10), 2.2, metalGray),
-    Sphere(V3(3.5, 0, -10), 2.2, metalRed)
+    Sphere(V3(3.5, 0, -10), 2.2, metalRed),
+
+    # brazos
+    Sphere(V3(-4.9, -0.5, -8.7), 1, white),
+    Sphere(V3(-1.3, -0.5, -9.4), 1, white),
+    Sphere(V3(4.9, -0.5, -8.7), 1, darkerBrown),
+    Sphere(V3(1.3, -0.5, -9.4), 1, darkerBrown),
+
+    # piernas
+    Sphere(V3(-4.5, 1.4, -8.5), 1, white),
+    Sphere(V3(-1.6, 1.6, -9.1), 1, white),
+    Sphere(V3(4.5, 1.4, -8.5), 1, darkerBrown),
+    Sphere(V3(1.6, 1.6, -9.1), 1, darkerBrown),
 ]

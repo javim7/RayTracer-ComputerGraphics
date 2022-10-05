@@ -34,13 +34,28 @@ class color(object):
 
         return color(int(r), int(g), int(b))
 
-    def __add__(this, other):
+    def __add__(self, other):
         return color(
-            this.r + other.r,
-            this.g + other.g,
-            this.b + other.b)
+            self.r + other.r,
+            self.g + other.g,
+            self.b + other.b)
 
     def toBytes(self):
+
+        if self.b > 255:
+            self.b = 255
+        if self.g > 255:
+            self.g = 255
+        if self.r > 255:
+            self.r = 255
+
+        if self.b < 0:
+            self.b = 0
+        if self.g < 0:
+            self.g = 0
+        if self.r < 0:
+            self.r = 0
+
         return bytes([self.b, self.g, self.r])
 
     def ___repr__(self):
