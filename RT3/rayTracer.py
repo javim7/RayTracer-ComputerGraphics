@@ -3,28 +3,28 @@ clase para poder crear objetos tipo rayTracer
 '''
 from math import *
 import random
-from turtle import back
+from envmap import *
 from lib import *
 from sphere import *
 from color import *
 from vector import *
 from material import *
 from light import *
+from plane import *
 
 LIGHTBLUE = color(173, 216, 230)
+BLUE = color(0, 0, 255)
 WHITE = color(255, 255, 255)
 BLACK = color(0, 0, 0)
 
-# codigo rt3
 MAX_RECURSION_DEPTH = 3
-# Trt3 termina aca
 
 
 class Raytracer(object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.background_color = WHITE
+        self.background_color = BLUE
         self.current_color = WHITE
         self.clear()
         self.scene = []
@@ -61,26 +61,30 @@ class Raytracer(object):
 
                     self.point(x, y, c)
 
-    def cast_ray(self, origin, direction, recursion=0):  # recursion es el rt3
-
-        # codigo rt3
-        if recursion >= MAX_RECURSION_DEPTH:
+    def get_background(self, direction):
+        if self.envmap:
+            return self.envmap.get_color(direction)
+        else:
             return self.background_color
-        # termina rt3
+
+    def cast_ray(self, origin, direction, recursion=0):
+
+        if recursion >= MAX_RECURSION_DEPTH:
+            return self.get_background(direction)
 
         material, intersect = self.scene_intersect(origin, direction)
 
         if material is None:
-            return self.background_color
+            return self.get_background(direction)
 
         light_dir = (self.light.position - intersect.point).normalize()
 
-        # nuevo codigo rt3
+        # reflection
         if material.albedo[2] > 0:
             reverse_direction = direction * -1
-            reflect_direction = self.reflect(
+            reflect_direction = reflect(
                 reverse_direction, intersect.normal)
-            reflect_bias = -1.1 if reflect_direction @ intersect.normal else 1.1
+            reflect_bias = -0.5 if reflect_direction @ intersect.normal < 0 else 0.5
             reflect_origin = intersect.point + \
                 (intersect.normal * reflect_bias)
             reflect_color = self.cast_ray(
@@ -89,6 +93,20 @@ class Raytracer(object):
             reflect_color = color(0, 0, 0)
 
         reflection = reflect_color * material.albedo[2]
+
+        # refraction
+        if material.albedo[3] > 0:
+            refract_direction = refract(
+                direction, intersect.normal, material.refractive_index)
+            refract_bias = -0.5 if refract_direction @ intersect.normal < 0 else 0.5
+            refract_origin = intersect.point + \
+                (intersect.normal * refract_bias)
+            refract_color = self.cast_ray(
+                refract_origin, refract_direction, recursion + 1)
+        else:
+            refract_color = color(0, 0, 0)
+
+        refraction = refract_color * material.albedo[3]
 
         shadow_bias = 1.1
         shadow_origin = intersect.point + (intersect.normal * shadow_bias)
@@ -105,12 +123,12 @@ class Raytracer(object):
             material.albedo[0] * \
             (1 - shadow_intensity)  # shadow intensity es de rt3
 
-        light_dir = self.reflect(light_dir, intersect.normal)
+        light_dir = reflect(light_dir, intersect.normal)
         rIntensity = max(0, light_dir @ direction)
         specularI = self.light.intensity * rIntensity ** material.spec
         specular = self.light.color * specularI * material.albedo[1]
 
-        return diffuse + specular + reflection  # reflection es rt3
+        return diffuse + specular + reflection + refraction
 
     def scene_intersect(self, origin, direction):
         zbuffer = 99999
@@ -125,6 +143,3 @@ class Raytracer(object):
                     material = o.material
                     intersect = object_intersect
         return material, intersect
-
-    def reflect(self, direction, normal):
-        return (direction - normal * 2 * (direction @ normal)).normalize()

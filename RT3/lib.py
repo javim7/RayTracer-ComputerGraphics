@@ -2,10 +2,35 @@
 funcion que escribe el archivo final bmp
 '''
 from writeUtils import *
+from vector import *
 
 
-def reflect(self, direction, normal):
-    return (direction - normal * 2 * (direction @ normal)).normalize()
+def reflect(I, N):
+    return (I - N * 2 * (I @ N)).normalize()
+
+
+def refract(I, N, roi):
+    etai = 1
+    etat = roi
+
+    cosi = (I @ N) * -1
+
+    if(cosi < 0):
+        cosi *= -1
+        etai *= -1
+        etat *= -1
+        N *= -1
+
+    eta = etai/etat
+
+    k = 1 - eta**2 * (1 - cosi**2)
+
+    if k < 0:
+        return V3(0, 0, 0)
+
+    cost = k ** 0.5
+
+    return ((I * eta) + (N * (eta * cosi - cost))).normalize()
 
 
 def writeBMP(filename, width, height, framebuffer):
