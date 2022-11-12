@@ -6,6 +6,7 @@ import random
 from envmap import *
 from lib import *
 from sphere import *
+from cube import *
 from color import *
 from vector import *
 from material import *

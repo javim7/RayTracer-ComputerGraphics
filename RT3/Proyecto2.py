@@ -1,6 +1,6 @@
 from rayTracer import *
 
-ray = Raytracer(800, 600)
+ray = Raytracer(1000, 700)
 
 rubber = Material(diffuse=color(100, 0, 0), albedo=[0.9, 0.1, 0, 0], spec=10)
 ivory = Material(diffuse=color(255, 255, 255),
@@ -22,10 +22,10 @@ ray.scene = [
     # Sphere(V3(0, 0, -5), 0.5, glass),
     # Sphere(V3(1, 1, -8), 1.7, rubber),
     # Sphere(V3(-2, 1, -10), 2, mirror),
-    # Plane(V3(0, 2.2, -5), 2, 2, glass)
+    # Plane(V3(0, 2.2, -5), 2, 2, glass),
 ]
 
-ray.envmap = Envmap('./RT3/texturas/envmap.bmp')
+ray.envmap = Envmap('./RT3/texturas/minecraft1.bmp')
 
 ray.render()
 ray.write('./RT3/proyecto2.bmp')
