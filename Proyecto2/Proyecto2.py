@@ -9,6 +9,8 @@ mirror = Material(diffuse=color(255, 255, 255),
                   albedo=[0, 1, 0.8, 0], spec=1425)
 glass = Material(diffuse=color(150, 180, 200), albedo=[
                  0, 0.5, 0.1, 0.8], spec=125, refractive_index=1.5)
+madera = Material(diffuse=(255, 0, 0), albedo=[
+    0.9, 0.1, 0, 0], spec=5, textura="./RT3/texturas/madera.bmp")
 
 
 ray.light = Light(
@@ -23,6 +25,7 @@ ray.scene = [
     # Sphere(V3(1, 1, -8), 1.7, rubber),
     # Sphere(V3(-2, 1, -10), 2, mirror),
     # Plane(V3(0, 2.2, -5), 2, 2, glass),
+    Cube(V3(0, 0, -5), 1, ivory),
 ]
 
 ray.envmap = Envmap('./RT3/texturas/minecraft1.bmp')

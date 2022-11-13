@@ -78,6 +78,9 @@ class Raytracer(object):
         if material is None:
             return self.get_background(direction)
 
+        # if material.textura:
+        #     material.diffuse = material.textura.getColor(*intersect.porcentaje)
+
         light_dir = (self.light.position - intersect.point).normalize()
 
         # reflection
