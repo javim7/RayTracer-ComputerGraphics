@@ -34,4 +34,4 @@ class Envmap(object):
         x = int(((atan2(direction.z, direction.x) / (2 * pi)) + 0.5) * self.width)
         y = int((acos(direction.y) / pi) * self.height)
 
-        return self.pixels[y][x]
+        return self.pixels[-y][x]

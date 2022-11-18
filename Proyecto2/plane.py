@@ -13,9 +13,9 @@ class Plane(object):
         self.material = material
 
     def ray_intersect(self, origin, direction):
-        d = (self.center.y - origin.y) / direction.y
+        d = -(origin.y + self.center.y) / direction.y
         impact = (direction * d) - origin
-        normal = V3(0, -1, 0)
+        normal = V3(0, 1, 0)
 
         if d <= 0 or \
                 impact.x > (self.center.x + self.w/2) or impact.x < (self.center.x - self.w/2) or \
@@ -25,5 +25,5 @@ class Plane(object):
         return Intersect(
             distance=d,
             point=impact,
-            normal=normal,
+            normal=normal
         )

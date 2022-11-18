@@ -53,6 +53,13 @@ class V3(object):
         # Magnitud del vector
         return (self.x**2 + self.y**2 + self.z**2)**0.5
 
+    def cross(self, other):
+        return V3(
+            self.y * other.z - self.z * other.y,
+            self.z * other.x - self.x * other.z,
+            self.x * other.y - self.y * other.x
+        )
+
     def normalize(self):
         try:
             return self * (1/self.length())

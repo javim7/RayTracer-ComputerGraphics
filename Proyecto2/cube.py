@@ -1,6 +1,7 @@
-from plane2 import *
+from planeC import *
 from vector import *
 from intersect import *
+from progress.bar import Bar
 
 
 class Cube(object):
@@ -13,19 +14,19 @@ class Cube(object):
         halfSize = size / 2
 
         self.planes.append(
-            Plane2((position + V3(halfSize, 0, 0)), V3(1, 0, 0), material))
+            PlaneC((position + V3(halfSize, 0, 0)), V3(1, 0, 0), material))
         self.planes.append(
-            Plane2((position + V3(-halfSize, 0, 0)), V3(-1, 0, 0), material))
+            PlaneC((position + V3(-halfSize, 0, 0)), V3(-1, 0, 0), material))
 
         self.planes.append(
-            Plane2((position + V3(0, halfSize, 0)), V3(0, 1, 0), material))
+            PlaneC((position + V3(0, halfSize, 0)), V3(0, 1, 0), material))
         self.planes.append(
-            Plane2((position + V3(0, -halfSize, 0)), V3(0, -1, 0), material))
+            PlaneC((position + V3(0, -halfSize, 0)), V3(0, -1, 0), material))
 
         self.planes.append(
-            Plane2((position + V3(0, 0, halfSize)), V3(0, 0, 1), material))
+            PlaneC((position + V3(0, 0, halfSize)), V3(0, 0, 1), material))
         self.planes.append(
-            Plane2((position + V3(0, 0, -halfSize)), V3(0, 0, -1), material))
+            PlaneC((position + V3(0, 0, -halfSize)), V3(0, 0, -1), material))
 
     def ray_intersect(self, orig, direction):
 
@@ -60,6 +61,67 @@ class Cube(object):
         if intersect is None:
             return None
 
-        return Intersect(distance=intersect.distance,
-                         point=intersect.point,
-                         normal=intersect.normal)
+        x, y = self.getNormal(0, intersect.point)
+
+        return Intersect(
+            distance=intersect.distance,
+            point=intersect.point,
+            normal=intersect.normal,
+            coords=V3(x, y, 0)
+        )
+
+    def getNormal(self, face, impact):
+        if face == 0:
+            minH = (self.position.z - self.size/2)
+            minV = (self.position.y - self.size/2)
+
+            z = (impact.z - minH) / self.size
+            y = (impact.y - minV) / self.size
+
+            return z, y
+
+        elif face == 1:
+            minH = (self.position.z + self.size/2)
+            minV = (self.position.y - self.size/2)
+
+            z = (impact.z - minH) / self.size
+            y = (impact.y - minV) / self.size
+
+            return z, y
+
+        elif face == 2:
+            minH = (self.position.x - self.size/2)
+            minV = (self.position.z - self.size/2)
+
+            x = (impact.x - minH) / self.size
+            z = (impact.z - minV) / self.size
+
+            return x, z
+
+        elif face == 3:
+
+            minH = (self.position.x - self.size/2)
+            minV = (self.position.z + self.size/2)
+
+            x = (impact.x - minH) / self.size
+            z = (impact.z - minV) / self.size
+
+            return x, z
+
+        elif face == 4:
+            minH = (self.position.x - self.size/2)
+            minV = (self.position.y - self.size/2)
+
+            x = (impact.x - minH) / self.size
+            y = (impact.y - minV) / self.size
+
+            return x, y
+
+        elif face == 5:
+            minH = (self.position.x + self.size/2)
+            minV = (self.position.y - self.size/2)
+
+            x = (impact.x - minH) / self.size
+            y = (impact.y - minV) / self.size
+
+            return x, y

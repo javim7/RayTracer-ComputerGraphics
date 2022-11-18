@@ -23,10 +23,10 @@ ray.scene = [
     Sphere(V3(0, 0, -5), 0.5, glass),
     Sphere(V3(1, 1, -8), 1.7, rubber),
     Sphere(V3(-2, 1, -10), 2, mirror),
-    Plane(V3(0, 2.2, -5), 2, 2, glass)
+    Plane(V3(0, 2.2, -5), 2, 2, ivory)
 ]
 
-ray.envmap = Envmap('./RT3/texturas/envmap.bmp')
+ray.envmap = Envmap('./Proyecto2/texturas/background2.bmp')
 
 ray.render()
-ray.write('./RT3/prueba.bmp')
+ray.write('./Proyecto2/prueba.bmp')

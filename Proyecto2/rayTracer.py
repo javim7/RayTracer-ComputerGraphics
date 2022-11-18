@@ -12,6 +12,8 @@ from vector import *
 from material import *
 from light import *
 from plane import *
+from planeC import *
+from triangle import *
 
 LIGHTBLUE = color(173, 216, 230)
 BLUE = color(0, 0, 255)
@@ -78,8 +80,9 @@ class Raytracer(object):
         if material is None:
             return self.get_background(direction)
 
-        # if material.textura:
-        #     material.diffuse = material.textura.getColor(*intersect.porcentaje)
+        if material.textura:
+            material.diffuse = material.textura.getColor(
+                intersect.coords.x, intersect.coords.y)
 
         light_dir = (self.light.position - intersect.point).normalize()
 
@@ -120,12 +123,11 @@ class Raytracer(object):
         shadow_intensity = 0
         if shadow_material:
             shadow_intensity = 0.7
-        # aca termina codigo rt3
 
         dIntensity = light_dir @ intersect.normal
         diffuse = material.diffuse * dIntensity * \
             material.albedo[0] * \
-            (1 - shadow_intensity)  # shadow intensity es de rt3
+            (1 - shadow_intensity)
 
         light_dir = reflect(light_dir, intersect.normal)
         rIntensity = max(0, light_dir @ direction)
